@@ -114,69 +114,196 @@
    DATA  -  this whole block is replaced automatically each refresh.
    ===================================================================== */
 const DATA = {
-  generated: "Friday 4 September 2026, 1:20pm",
-
-  jobs: [
-    { status:"New",              colour:"blue",   items:[
-      { t:"Glencore MIM Copper - demin plant resin", m:"Supplier PO needed" },
-      { t:"Glencore MIM Copper - DN100 regulator",   m:"Supplier PO needed" },
-      { t:"JCU Estate Directorate - RO/Demin at TSP" }
-    ]},
-    { status:"PO required",      colour:"amber",  items:[
-      { t:"South32 Cannington - Burkert solenoid valve", m:"Required <b>17 Sep</b>" }
-    ]},
-    { status:"Awaiting supplies",colour:"orange", items:[
-      { t:"South32 Cannington - Grundfos CRI 20-5 pump", m:"Required <b>11 Sep</b>" }
-    ]},
-    { status:"Goods received",   colour:"blue",   items:[] },
-    { status:"In workshop",      colour:"pink",   items:[] },
-    { status:"On hold",          colour:"red",    items:[] },
-
-    /* Analysis and supervision is engineering work, not supply, so it sits
-       apart from the supply pipeline. Keep it last. */
-    { status:"Analysis / Supervision", colour:"purple", items:[
-      { t:"Glencore MIM Copper - MPS third-party evaluation" },
-      { t:"Glencore MIM Copper - RO/EDI design" },
-      { t:"Glencore MIM Copper - plant shutdown" },
-      { t:"Glencore MIM Copper - PHE design, Alfa Laval MX25-BFM" }
-    ]}
+  "generated": "Friday 4 September 2026, 2:14pm",
+  "jobs": [
+    {
+      "status": "New",
+      "colour": "blue",
+      "items": [
+        {
+          "t": "Glencore MIM Copper – demin plant resin",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "Glencore MIM Copper – DN100 regulator",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "JCU Estate Directorate – RO/Demin at TSP"
+        }
+      ]
+    },
+    {
+      "status": "PO required",
+      "colour": "amber",
+      "items": [
+        {
+          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
+          "m": "Required <b>17 Sep</b>"
+        }
+      ]
+    },
+    {
+      "status": "Awaiting supplies",
+      "colour": "orange",
+      "items": [
+        {
+          "t": "South32 Cannington – Grundfos CRI 20-5 vertical multistage pump",
+          "m": "Required <b>11 Sep</b>"
+        }
+      ]
+    },
+    {
+      "status": "Goods received",
+      "colour": "blue",
+      "items": []
+    },
+    {
+      "status": "In workshop",
+      "colour": "pink",
+      "items": []
+    },
+    {
+      "status": "On hold",
+      "colour": "red",
+      "items": []
+    },
+    {
+      "status": "Analysis / Supervision",
+      "colour": "purple",
+      "items": [
+        {
+          "t": "Glencore MIM Copper – C003026467"
+        },
+        {
+          "t": "Glencore MIM Copper – MPS third-party evaluation"
+        },
+        {
+          "t": "Glencore MIM Copper – plant shutdown"
+        },
+        {
+          "t": "Glencore MIM Copper – RO/EDI design"
+        }
+      ]
+    }
   ],
-
-  quotes: [
-    { status:"New RFQ",              colour:"dim",    items:[
-      { t:"Gunna Go Holiday Park - bulk RO antiscalant and filter cartridges",
-        m:"<b>260904GUN2</b> &nbsp;·&nbsp; Needs assigning" }
-    ]},
-    { status:"Assigned",             colour:"blue",   items:[
-      { t:"Glencore MIM Copper - MX25B heat exchanger plates",
-        m:"<b>260904GLE1</b> &nbsp;·&nbsp; Andrew Simon" }
-    ]},
-    { status:"Awaiting authorisation",colour:"orange",items:[]},
-    { status:"Authorised",           colour:"purple", items:[
-      { t:"JBS Australia Townsville - softener salt resupply",
-        m:"<b>260904JBS1</b> &nbsp;·&nbsp; Due 10 Sep &nbsp;·&nbsp; Ready to send" }
-    ]},
-    { status:"Quote sent",           colour:"pink",   items:[]}
+  "quotes": [
+    {
+      "status": "New RFQ",
+      "colour": "dim",
+      "items": [
+        {
+          "t": "Gunna Go Holiday Park - Bulk RO antiscalant and filter cartridges",
+          "m": "<b>260904GUN2</b> &nbsp;&#183;&nbsp; Needs assigning"
+        }
+      ]
+    },
+    {
+      "status": "Assigned",
+      "colour": "blue",
+      "items": [
+        {
+          "t": "Glencore MIM Copper – MX25B heat exchanger plates",
+          "m": "<b>260904GLE1</b> &nbsp;&#183;&nbsp; Andrew Simon"
+        }
+      ]
+    },
+    {
+      "status": "Awaiting authorisation",
+      "colour": "orange",
+      "items": []
+    },
+    {
+      "status": "Authorised",
+      "colour": "purple",
+      "items": [
+        {
+          "t": "TEST - JBS Australia Townsville - softener salt resupply",
+          "m": "<b>260904JBS1</b> &nbsp;&#183;&nbsp; Lene &nbsp;&#183;&nbsp; Due 10 Sep &nbsp;&#183;&nbsp; Ready to send"
+        }
+      ]
+    },
+    {
+      "status": "Quote sent",
+      "colour": "pink",
+      "items": []
+    }
   ],
-
-  today: {
-    heading: "Friday 4 September",
-    events: []            /* {tm:"10:30am", sb:"Weekly Meeting", lc:"Upstairs"} */
+  "today": {
+    "heading": "Friday 4 September",
+    "events": []
   },
-
-  week: [
-    { dw:"Sat", dn:"5",  weekend:true,  events:[] },
-    { dw:"Sun", dn:"6",  weekend:true,  events:[
-      { allday:true, tm:"All day", sb:"Father's Day", lc:"Australia" } ]},
-    { dw:"Mon", dn:"7",  weekend:false, events:[
-      { allday:true, tm:"All day", sb:"Going to Farm", lc:"Farm" },
-      { tm:"7:30am",  sb:"Rubbish Bins Out to Road" },
-      { tm:"10:30am", sb:"Weekly Meeting", lc:"Upstairs" } ]},
-    { dw:"Tue", dn:"8",  weekend:false, events:[
-      { tm:"9:00am",  sb:"Installation of RO System 5000L" } ]},
-    { dw:"Wed", dn:"9",  weekend:false, events:[] },
-    { dw:"Thu", dn:"10", weekend:false, events:[] },
-    { dw:"Fri", dn:"11", weekend:false, events:[] }
+  "week": [
+    {
+      "dw": "Sat",
+      "dn": "5",
+      "weekend": true,
+      "events": []
+    },
+    {
+      "dw": "Sun",
+      "dn": "6",
+      "weekend": true,
+      "events": [
+        {
+          "allday": true,
+          "tm": "All day",
+          "sb": "Father's Day",
+          "lc": "Australia"
+        }
+      ]
+    },
+    {
+      "dw": "Mon",
+      "dn": "7",
+      "weekend": false,
+      "events": [
+        {
+          "allday": true,
+          "tm": "All day",
+          "sb": "Going to Farm",
+          "lc": "Farm"
+        },
+        {
+          "tm": "7:30am",
+          "sb": "Rubbish Bins Out to Road"
+        },
+        {
+          "tm": "10:30am",
+          "sb": "Weekly Meeting",
+          "lc": "Upstairs"
+        }
+      ]
+    },
+    {
+      "dw": "Tue",
+      "dn": "8",
+      "weekend": false,
+      "events": [
+        {
+          "tm": "9:00am",
+          "sb": "Installation of RO System - 5000L"
+        }
+      ]
+    },
+    {
+      "dw": "Wed",
+      "dn": "9",
+      "weekend": false,
+      "events": []
+    },
+    {
+      "dw": "Thu",
+      "dn": "10",
+      "weekend": false,
+      "events": []
+    },
+    {
+      "dw": "Fri",
+      "dn": "11",
+      "weekend": false,
+      "events": []
+    }
   ]
 };
 
@@ -227,12 +354,21 @@ const SECONDS_PER_SCREEN = 30;
      reports a screen size that isn't the real one. */
   var fit = document.getElementById("fit");
   function resize(){
-    var w = document.documentElement.clientWidth  || window.innerWidth;
-    var h = document.documentElement.clientHeight || window.innerHeight;
+    var w = document.documentElement.clientWidth  || window.innerWidth  || 0;
+    var h = document.documentElement.clientHeight || window.innerHeight || 0;
+
+    /* Some players report 0 for a moment while starting up. Scaling by 0
+       would blank the screen, so hold at full size and try again shortly. */
+    if (w < 200 || h < 200){
+      fit.style.transform = "scale(1)";
+      setTimeout(resize, 400);
+      return;
+    }
+
     var s = Math.min(w/1920, h/1080);
 
     var forced = /[?&]scale=([0-9.]+)/.exec(location.search);
-    if (forced) s = parseFloat(forced[1]);
+    if (forced && parseFloat(forced[1]) > 0) s = parseFloat(forced[1]);
 
     fit.style.transform = "translate(" + ((w - 1920*s)/2) + "px," +
                                         ((h - 1080*s)/2) + "px) scale(" + s + ")";
