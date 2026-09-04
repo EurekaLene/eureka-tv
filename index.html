@@ -2,7 +2,7 @@
 <html lang="en-AU">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1920, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Eureka Water & Filtration</title>
 <style>
   :root{
@@ -26,8 +26,14 @@
     font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;cursor:none}
 
-  /* ---------- frame ---------- */
-  #shell{position:fixed;inset:0;display:flex;flex-direction:column}
+  /* ---------- frame ----------
+     Everything is laid out on a fixed 1920 x 1080 canvas and then scaled
+     to whatever the screen actually is. Without this, a TV browser that
+     reports a smaller viewport renders everything at giant size and cuts
+     the bottom off. */
+  #fit{position:absolute;top:0;left:0;width:1920px;height:1080px;
+       transform-origin:0 0}
+  #shell{position:absolute;inset:0;display:flex;flex-direction:column}
 
   header{height:96px;flex:0 0 96px;display:flex;align-items:center;gap:28px;
     padding:0 48px;background:var(--panel);border-bottom:1px solid var(--line)}
@@ -177,7 +183,7 @@ const DATA = {
 const SECONDS_PER_SCREEN = 30;
 </script>
 
-<div id="shell">
+<div id="fit"><div id="shell">
 
   <header>
     <div class="mark"><span class="e">Eureka</span><span class="w">Water &amp; Filtration</span></div>
@@ -210,11 +216,34 @@ const SECONDS_PER_SCREEN = 30;
     <div id="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
   </footer>
 
-</div>
+</div></div>
 
 <script>
 (function(){
   "use strict";
+
+  /* ---------- fit the 1920x1080 canvas to this screen ----------
+     Add ?scale=0.8 to the address to override it by hand if a player
+     reports a screen size that isn't the real one. */
+  var fit = document.getElementById("fit");
+  function resize(){
+    var w = document.documentElement.clientWidth  || window.innerWidth;
+    var h = document.documentElement.clientHeight || window.innerHeight;
+    var s = Math.min(w/1920, h/1080);
+
+    var forced = /[?&]scale=([0-9.]+)/.exec(location.search);
+    if (forced) s = parseFloat(forced[1]);
+
+    fit.style.transform = "translate(" + ((w - 1920*s)/2) + "px," +
+                                        ((h - 1080*s)/2) + "px) scale(" + s + ")";
+  }
+  resize();
+  window.addEventListener("resize", resize);
+  window.addEventListener("orientationchange", resize);
+  /* some TV browsers report the wrong size for a moment after load */
+  setTimeout(resize, 500);
+  setTimeout(resize, 2500);
+
   var C = { blue:"var(--blue)", green:"var(--green)", amber:"var(--amber)",
             orange:"var(--orange)", purple:"var(--purple)", pink:"var(--pink)",
             red:"var(--red)", dim:"var(--dimmer)" };
