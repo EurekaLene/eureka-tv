@@ -1,0 +1,38 @@
+name: Refresh the office TV dashboard
+
+# Times are UTC. Brisbane is UTC+10 all year, no daylight saving.
+# 20:00-08:00 UTC covers 6am to 6pm Brisbane.
+on:
+  schedule:
+    - cron: "*/30 20-23,0-8 * * *"
+  workflow_dispatch:          # lets you run it by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-dashboard
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build index.html from the Notion data page
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: python3 build.py
+
+      - name: Commit if anything changed
+        run: |
+          if git diff --quiet -- index.html; then
+            echo "No change, nothing to publish."
+            exit 0
+          fi
+          git config user.name  "Eureka TV"
+          git config user.email "actions@github.com"
+          git add index.html
+          git commit -m "Refresh dashboard"
+          git push
