@@ -102,8 +102,8 @@
 
   /* ---------- insurance screen ----------
      A stat row over a plain list, rather than the kanban used by the boards.
-     There are only a dozen policies and the useful comparison is "how many
-     days" down a single column, which columns cannot give you.
+     The useful comparison is "how many
+     days" read straight down a single column, which columns cannot give you.
      The stat row is the part that has to read from the far side of the room,
      so the numbers are large and the zeros are kept rather than hidden -
      "0 expired" is the whole point of the screen on a good day. */
@@ -121,9 +121,9 @@
   .stat.zero .num{color:var(--dimmer)}
   /* One row per policy, full width, so the Days column lines up and can be
      scanned straight down. The left edge carries the status colour. */
-  .inslist{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+  .inslist{flex:1;min-height:0;display:flex;flex-direction:column;gap:5px}
   .insrow{display:grid;grid-template-columns:1fr 210px 190px 200px;align-items:center;
-    gap:20px;height:50px;padding:0 22px;background:var(--panel);
+    gap:20px;height:46px;padding:0 22px;background:var(--panel);
     border:1px solid var(--line);border-left-width:5px;border-left-style:solid;
     border-radius:10px}
   .insrow.head{height:28px;padding:0 23px 0 27px;background:none;border:0;
@@ -131,7 +131,7 @@
   /* the header cells reuse .dy/.ex only to inherit their right alignment, so
      undo the type styling those classes carry for real rows */
   .insrow.head .dy,.insrow.head .ex{font:inherit;color:inherit;letter-spacing:inherit}
-  .insrow .nm{font-size:23px;font-weight:500;white-space:nowrap;overflow:hidden;
+  .insrow .nm{font-size:22px;font-weight:500;white-space:nowrap;overflow:hidden;
     text-overflow:ellipsis}
   .insrow .rg{color:var(--dim);font-weight:400}
   .insrow .unc{font-size:15px;color:var(--dimmer);border:1px solid var(--line);
@@ -357,10 +357,12 @@ const SECONDS_PER_SCREEN = 30;
     insured: { cls:"r-insured", lab:"Covered" }
   };
 
-  /* Twelve 50px rows plus the header is what fits under the stat row on a
-     1080-high canvas. Past that, the last row becomes a "+ n more" line
+  /* Fourteen 46px rows plus the header is what fits under the stat row on a
+     1080-high canvas. The whole register should be visible on a compliance
+     screen, so this is set to fit the fleet with room to grow rather than
+     to a tidy round number. Past it, the last row becomes a "+ n more" line
      rather than letting the list run off the bottom of the screen. */
-  var MAX_INS_ROWS = 12;
+  var MAX_INS_ROWS = 14;
 
   var INS_STATS = [
     { k:"expired", cls:"red",    lab:"Expired" },
