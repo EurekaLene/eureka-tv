@@ -102,8 +102,8 @@
 
   /* ---------- insurance screen ----------
      A stat row over a plain list, rather than the kanban used by the boards.
-     The useful comparison is "how many
-     days" read straight down a single column, which columns cannot give you.
+     The useful comparison is "how many days" read straight down a single
+     column, which side-by-side columns cannot give you.
      The stat row is the part that has to read from the far side of the room,
      so the numbers are large and the zeros are kept rather than hidden -
      "0 expired" is the whole point of the screen on a good day. */
@@ -153,6 +153,30 @@
   .r-insured{border-left-color:var(--green)}
   .r-insured .st{color:var(--green)} .r-insured .dy{color:var(--text)}
 
+  /* ---------- riddle screen ----------
+     Today's puzzle with no answer, and yesterday's puzzle with its answer
+     revealed underneath. Answering today's on the same screen would remove
+     the only reason to look again tomorrow. */
+  .ridwrap{display:flex;flex-direction:column;gap:26px;height:100%}
+  .ridmain{flex:1;min-height:0;background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:40px 64px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;gap:28px}
+  .ridkind{font-size:20px;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--dimmer);font-weight:600}
+  .ridq{font-size:52px;line-height:1.3;font-weight:500;max-width:1520px}
+  /* emoji puzzles carry no words, so they get the whole card */
+  .ridq.big{font-size:150px;line-height:1.2;letter-spacing:18px}
+  .ridhint{font-size:26px;color:var(--dim);max-width:1200px}
+  .ridprev{flex:0 0 auto;background:var(--panel);border:1px solid var(--line);
+    border-left:5px solid var(--green);border-radius:14px;padding:20px 28px;
+    display:flex;align-items:baseline;gap:24px}
+  .ridprev .plab{font-size:18px;letter-spacing:1.4px;text-transform:uppercase;
+    color:var(--dimmer);font-weight:600;flex:0 0 auto}
+  .ridprev .pq{font-size:21px;color:var(--dim);flex:1;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
+  .ridprev .pa{font-size:26px;font-weight:700;color:var(--green);flex:0 0 auto}
+  .off{display:none!important}
+
   footer{flex:0 0 46px;height:46px;display:flex;align-items:center;padding:0 48px;
     background:var(--panel);border-top:1px solid var(--line);font-size:17px;color:var(--dimmer)}
   #dots{margin-left:auto;display:flex;gap:9px}
@@ -167,7 +191,7 @@
    DATA  -  this whole block is replaced automatically each refresh.
    ===================================================================== */
 const DATA = {
-  "generated": "Monday 7 September 2026, 1:38pm",
+  "generated": "Monday 7 September 2026, 2:04pm",
   "jobs": [
     {
       "status": "New",
@@ -187,10 +211,6 @@ const DATA = {
       "items": [
         {
           "t": "Glencore MIM Copper – DN100 regulator",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "South32 Cannington – Seal, PWT/adaptor",
           "m": "Supplier PO needed"
         }
       ]
@@ -221,6 +241,10 @@ const DATA = {
         },
         {
           "t": "South32 Cannington – Mill screens x 4",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "South32 Cannington – Seal, PWT/adaptor",
           "m": "Supplier PO needed"
         }
       ]
@@ -469,7 +493,8 @@ const DATA = {
         }
       ]
     }
-  ]
+  ],
+  "riddle": {}
 };
 
 const SECONDS_PER_SCREEN = 30;
@@ -505,6 +530,20 @@ const SECONDS_PER_SCREEN = 30;
       <div class="inswrap">
         <div class="insstats" id="insStats"></div>
         <div class="inslist" id="insList"></div>
+      </div>
+    </section>
+    <section class="screen" id="s4">
+      <div class="ridwrap">
+        <div class="ridmain">
+          <div class="ridkind" id="ridKind"></div>
+          <div class="ridq" id="ridQ"></div>
+          <div class="ridhint" id="ridHint"></div>
+        </div>
+        <div class="ridprev" id="ridPrev">
+          <span class="plab">Yesterday</span>
+          <span class="pq" id="ridPQ"></span>
+          <span class="pa" id="ridPA"></span>
+        </div>
       </div>
     </section>
   </main>
@@ -733,6 +772,34 @@ const SECONDS_PER_SCREEN = 30;
     }
   }
 
+  /* ---------- riddle ----------
+     Optional, like insurance. No riddle on the page means the screen is left
+     out of the rotation rather than showing an empty card. */
+  var rid = (DATA.riddle && DATA.riddle.q) ? DATA.riddle : null;
+
+  function buildRiddle(){
+    document.getElementById("ridKind").textContent = rid.type || "Riddle of the day";
+
+    var q = document.getElementById("ridQ");
+    q.textContent = rid.q;
+    /* An emoji puzzle has no letters in it. Test for that rather than for a
+       short string, so a short worded riddle is not blown up to 150px. */
+    q.className = "ridq" + (/[a-z]/i.test(rid.q) ? "" : " big");
+
+    var hint = document.getElementById("ridHint");
+    hint.textContent = rid.hint || "";
+    hint.className = rid.hint ? "ridhint" : "ridhint off";
+
+    var prev = document.getElementById("ridPrev");
+    if (rid.prev && rid.prev.a){
+      document.getElementById("ridPQ").textContent = rid.prev.q || "";
+      document.getElementById("ridPA").textContent = rid.prev.a;
+      prev.className = "ridprev";
+    } else {
+      prev.className = "ridprev off";
+    }
+  }
+
   /* ---------- clock ---------- */
   var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var MONTHS = ["January","February","March","April","May","June","July",
@@ -758,6 +825,10 @@ const SECONDS_PER_SCREEN = 30;
   if (insRows.length){
     NAMES.push("Insurance");
     screens.push(document.getElementById("s3"));
+  }
+  if (rid){
+    NAMES.push("Riddle");
+    screens.push(document.getElementById("s4"));
   }
 
   /* One dot per screen, built to match however many screens we ended up with. */
@@ -803,6 +874,7 @@ const SECONDS_PER_SCREEN = 30;
   buildCols("quoteCols", DATA.quotes, false);
   buildCalendar();
   if (insRows.length){ buildInsurance(); }
+  if (rid){ buildRiddle(); }
   show(0);
 })();
 </script>
