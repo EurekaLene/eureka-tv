@@ -100,6 +100,59 @@
   .slot .ss{font-size:18px;line-height:1.25;margin-top:3px}
   .slot .sl{font-size:16px;color:var(--dim);margin-top:3px}
 
+  /* ---------- insurance screen ----------
+     A stat row over a plain list, rather than the kanban used by the boards.
+     There are only a dozen policies and the useful comparison is "how many
+     days" down a single column, which columns cannot give you.
+     The stat row is the part that has to read from the far side of the room,
+     so the numbers are large and the zeros are kept rather than hidden -
+     "0 expired" is the whole point of the screen on a good day. */
+  .inswrap{display:flex;flex-direction:column;gap:26px;height:100%}
+  .insstats{flex:0 0 auto;display:flex;gap:24px}
+  .stat{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
+    border-left-width:5px;border-left-style:solid;border-radius:14px;
+    padding:20px 26px;display:flex;align-items:center;gap:22px}
+  .stat .num{font-size:62px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .stat .lab{font-size:22px;color:var(--dim);font-weight:600;letter-spacing:.2px;line-height:1.25}
+  .stat.red{border-left-color:var(--red)}       .stat.red .num{color:var(--red)}
+  .stat.amber{border-left-color:var(--amber)}   .stat.amber .num{color:var(--amber)}
+  .stat.purple{border-left-color:var(--purple)} .stat.purple .num{color:var(--purple)}
+  .stat.green{border-left-color:var(--green)}   .stat.green .num{color:var(--green)}
+  .stat.zero .num{color:var(--dimmer)}
+  /* One row per policy, full width, so the Days column lines up and can be
+     scanned straight down. The left edge carries the status colour. */
+  .inslist{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+  .insrow{display:grid;grid-template-columns:1fr 210px 190px 200px;align-items:center;
+    gap:20px;height:50px;padding:0 22px;background:var(--panel);
+    border:1px solid var(--line);border-left-width:5px;border-left-style:solid;
+    border-radius:10px}
+  .insrow.head{height:28px;padding:0 23px 0 27px;background:none;border:0;
+    font-size:16px;letter-spacing:1.4px;text-transform:uppercase;color:var(--dimmer)}
+  /* the header cells reuse .dy/.ex only to inherit their right alignment, so
+     undo the type styling those classes carry for real rows */
+  .insrow.head .dy,.insrow.head .ex{font:inherit;color:inherit;letter-spacing:inherit}
+  .insrow .nm{font-size:23px;font-weight:500;white-space:nowrap;overflow:hidden;
+    text-overflow:ellipsis}
+  .insrow .rg{color:var(--dim);font-weight:400}
+  .insrow .unc{font-size:15px;color:var(--dimmer);border:1px solid var(--line);
+    border-radius:5px;padding:2px 7px;margin-left:12px;
+    text-transform:uppercase;letter-spacing:.8px}
+  .insrow .st{font-size:20px;font-weight:600}
+  .insrow .dy{font-size:24px;font-weight:700;text-align:right;
+    font-variant-numeric:tabular-nums}
+  .insrow .dy small{font-size:17px;font-weight:400;color:var(--dim);margin-left:7px}
+  .insrow .ex{font-size:20px;color:var(--dim);text-align:right}
+  .insmore{font-size:18px;color:var(--dimmer);padding:6px 27px}
+
+  .r-expired{border-left-color:var(--red)}
+  .r-expired .st,.r-expired .dy{color:var(--red)}
+  .r-soon{border-left-color:var(--amber)}
+  .r-soon .st,.r-soon .dy{color:var(--amber)}
+  .r-nodate{border-left-color:var(--purple)}
+  .r-nodate .st{color:var(--purple)} .r-nodate .dy{color:var(--dimmer)}
+  .r-insured{border-left-color:var(--green)}
+  .r-insured .st{color:var(--green)} .r-insured .dy{color:var(--text)}
+
   footer{flex:0 0 46px;height:46px;display:flex;align-items:center;padding:0 48px;
     background:var(--panel);border-top:1px solid var(--line);font-size:17px;color:var(--dimmer)}
   #dots{margin-left:auto;display:flex;gap:9px}
@@ -114,41 +167,17 @@
    DATA  -  this whole block is replaced automatically each refresh.
    ===================================================================== */
 const DATA = {
-  "generated": "Monday 7 September 2026, 1:04pm",
+  "generated": "Monday 7 September 2026, 1:38pm",
   "jobs": [
     {
       "status": "New",
       "colour": "blue",
       "items": [
         {
-          "t": "AIMS – PO T140039",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "Glencore MIM Copper – demin plant resin",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "Glencore MIM Copper – DN100 regulator",
-          "m": "Supplier PO needed"
-        },
-        {
           "t": "JCU Estate Directorate – Repair leak in 506"
         },
         {
           "t": "JCU Estate Directorate – RO/Demin at TSP"
-        },
-        {
-          "t": "South32 Cannington – Flow meter",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "South32 Cannington – Mill screens x 4",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "South32 Cannington – Seal, PWT/adaptor",
-          "m": "Supplier PO needed"
         }
       ]
     },
@@ -157,8 +186,12 @@ const DATA = {
       "colour": "amber",
       "items": [
         {
-          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
-          "m": "Required <b>17 Sep</b>"
+          "t": "Glencore MIM Copper – DN100 regulator",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "South32 Cannington – Seal, PWT/adaptor",
+          "m": "Supplier PO needed"
         }
       ]
     },
@@ -169,6 +202,26 @@ const DATA = {
         {
           "t": "South32 Cannington – Grundfos CRI 20-5 vertical multistage pump",
           "m": "Required <b>11 Sep</b>"
+        },
+        {
+          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
+          "m": "Required <b>17 Sep</b>"
+        },
+        {
+          "t": "AIMS – PO T140039",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "Glencore MIM Copper – demin plant resin",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "South32 Cannington – Flow meter",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "South32 Cannington – Mill screens x 4",
+          "m": "Supplier PO needed"
         }
       ]
     },
@@ -180,11 +233,6 @@ const DATA = {
     {
       "status": "In workshop",
       "colour": "pink",
-      "items": []
-    },
-    {
-      "status": "On hold",
-      "colour": "red",
       "items": []
     },
     {
@@ -204,6 +252,11 @@ const DATA = {
           "t": "Glencore MIM Copper – RO/EDI design"
         }
       ]
+    },
+    {
+      "status": "On hold",
+      "colour": "red",
+      "items": []
     }
   ],
   "quotes": [
@@ -448,11 +501,17 @@ const SECONDS_PER_SCREEN = 30;
         <div class="week" id="weekGrid"></div>
       </div>
     </section>
+    <section class="screen" id="s3">
+      <div class="inswrap">
+        <div class="insstats" id="insStats"></div>
+        <div class="inslist" id="insList"></div>
+      </div>
+    </section>
   </main>
 
   <footer>
     <span id="stamp"></span>
-    <div id="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div id="dots"></div>
   </footer>
 
 </div></div>
@@ -588,6 +647,90 @@ const SECONDS_PER_SCREEN = 30;
     });
   }
 
+  /* ---------- insurance ----------
+     "insurance" was added to the data after the first three screens existed, so
+     a data page written by an older scheduled task can arrive without it.
+     Normalise it here and let the rotation drop the screen when there is
+     nothing to show, rather than parking a blank panel on the wall. */
+  var insRows = (DATA.insurance || []).filter(function(r){ return r && r.t; });
+
+  var INS_STATE = {
+    expired: { cls:"r-expired", lab:"Expired" },
+    soon:    { cls:"r-soon",    lab:"Expiring soon" },
+    nodate:  { cls:"r-nodate",  lab:"No expiry date" },
+    insured: { cls:"r-insured", lab:"Covered" }
+  };
+
+  /* Twelve 50px rows plus the header is what fits under the stat row on a
+     1080-high canvas. Past that, the last row becomes a "+ n more" line
+     rather than letting the list run off the bottom of the screen. */
+  var MAX_INS_ROWS = 12;
+
+  var INS_STATS = [
+    { k:"expired", cls:"red",    lab:"Expired" },
+    { k:"soon",    cls:"amber",  lab:"Expiring<br>within 30 days" },
+    { k:"nodate",  cls:"purple", lab:"No expiry<br>date recorded",
+      hideWhenZero:true },
+    { k:"insured", cls:"green",  lab:"Covered" }
+  ];
+
+  function buildInsurance(){
+    var count = { expired:0, soon:0, nodate:0, insured:0 };
+    insRows.forEach(function(r){
+      if (count[r.state] !== undefined){ count[r.state]++; }
+    });
+
+    var host = document.getElementById("insStats");
+    host.innerHTML = "";
+    INS_STATS.forEach(function(s){
+      var n = count[s.k];
+      if (s.hideWhenZero && !n){ return; }
+      var d = document.createElement("div");
+      d.className = "stat " + s.cls + (n ? "" : " zero");
+      d.innerHTML = '<span class="num">' + n + '</span>' +
+                    '<span class="lab">' + s.lab + '</span>';
+      host.appendChild(d);
+    });
+
+    var list = document.getElementById("insList");
+    list.innerHTML =
+      '<div class="insrow head"><span>Insured item</span><span>Status</span>' +
+      '<span class="dy">Days</span><span class="ex">Expires</span></div>';
+
+    var shown = insRows, hidden = 0;
+    if (shown.length > MAX_INS_ROWS){
+      hidden = shown.length - (MAX_INS_ROWS - 1);
+      shown = shown.slice(0, MAX_INS_ROWS - 1);
+    }
+
+    shown.forEach(function(r){
+      var st = INS_STATE[r.state] || INS_STATE.nodate;
+      var days = "&#8212;";
+      if (typeof r.days === "number"){
+        days = r.days + "<small>" +
+               (r.state === "expired" ? "over" : "left") + "</small>";
+      }
+      var row = document.createElement("div");
+      row.className = "insrow " + st.cls;
+      row.innerHTML =
+        '<div class="nm">' + r.t +
+          (r.rego ? ' <span class="rg">&#183; ' + r.rego + '</span>' : '') +
+          (r.unconfirmed ? '<span class="unc">Unconfirmed</span>' : '') +
+        '</div>' +
+        '<div class="st">' + st.lab + '</div>' +
+        '<div class="dy">' + days + '</div>' +
+        '<div class="ex">' + (r.expiry || "&#8212;") + '</div>';
+      list.appendChild(row);
+    });
+
+    if (hidden){
+      var more = document.createElement("div");
+      more.className = "insmore";
+      more.textContent = "+ " + hidden + " more";
+      list.appendChild(more);
+    }
+  }
+
   /* ---------- clock ---------- */
   var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var MONTHS = ["January","February","March","April","May","June","July",
@@ -609,7 +752,21 @@ const SECONDS_PER_SCREEN = 30;
   var screens = [document.getElementById("s0"),
                  document.getElementById("s1"),
                  document.getElementById("s2")];
-  var dots = document.querySelectorAll("#dots .dot");
+
+  if (insRows.length){
+    NAMES.push("Insurance");
+    screens.push(document.getElementById("s3"));
+  }
+
+  /* One dot per screen, built to match however many screens we ended up with. */
+  var dotHost = document.getElementById("dots"), dots = [];
+  screens.forEach(function(){
+    var d = document.createElement("div");
+    d.className = "dot";
+    dotHost.appendChild(d);
+    dots.push(d);
+  });
+
   var fill = document.getElementById("barFill");
   var i = -1, t = null, p = null;
 
@@ -643,6 +800,7 @@ const SECONDS_PER_SCREEN = 30;
   buildCols("jobCols",   DATA.jobs, true);
   buildCols("quoteCols", DATA.quotes, false);
   buildCalendar();
+  if (insRows.length){ buildInsurance(); }
   show(0);
 })();
 </script>
