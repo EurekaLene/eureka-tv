@@ -191,42 +191,12 @@
    DATA  -  this whole block is replaced automatically each refresh.
    ===================================================================== */
 const DATA = {
-  "generated": "Monday 7 September 2026, 2:04pm",
+  "generated": "Monday 7 September 2026, 3:05pm",
   "jobs": [
     {
       "status": "New",
       "colour": "blue",
       "items": [
-        {
-          "t": "JCU Estate Directorate – Repair leak in 506"
-        },
-        {
-          "t": "JCU Estate Directorate – RO/Demin at TSP"
-        }
-      ]
-    },
-    {
-      "status": "PO required",
-      "colour": "amber",
-      "items": [
-        {
-          "t": "Glencore MIM Copper – DN100 regulator",
-          "m": "Supplier PO needed"
-        }
-      ]
-    },
-    {
-      "status": "Awaiting supplies",
-      "colour": "orange",
-      "items": [
-        {
-          "t": "South32 Cannington – Grundfos CRI 20-5 vertical multistage pump",
-          "m": "Required <b>11 Sep</b>"
-        },
-        {
-          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
-          "m": "Required <b>17 Sep</b>"
-        },
         {
           "t": "AIMS – PO T140039",
           "m": "Supplier PO needed"
@@ -234,6 +204,16 @@ const DATA = {
         {
           "t": "Glencore MIM Copper – demin plant resin",
           "m": "Supplier PO needed"
+        },
+        {
+          "t": "Glencore MIM Copper – DN100 regulator",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "JCU Estate Directorate – Repair leak in 506"
+        },
+        {
+          "t": "JCU Estate Directorate – RO/Demin at TSP"
         },
         {
           "t": "South32 Cannington – Flow meter",
@@ -250,6 +230,26 @@ const DATA = {
       ]
     },
     {
+      "status": "PO required",
+      "colour": "amber",
+      "items": [
+        {
+          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
+          "m": "Required <b>17 Sep</b>"
+        }
+      ]
+    },
+    {
+      "status": "Awaiting supplies",
+      "colour": "orange",
+      "items": [
+        {
+          "t": "South32 Cannington – Grundfos CRI 20-5 vertical multistage pump",
+          "m": "Required <b>11 Sep</b>"
+        }
+      ]
+    },
+    {
       "status": "Goods received",
       "colour": "blue",
       "items": []
@@ -257,6 +257,11 @@ const DATA = {
     {
       "status": "In workshop",
       "colour": "pink",
+      "items": []
+    },
+    {
+      "status": "On hold",
+      "colour": "red",
       "items": []
     },
     {
@@ -276,11 +281,6 @@ const DATA = {
           "t": "Glencore MIM Copper – RO/EDI design"
         }
       ]
-    },
-    {
-      "status": "On hold",
-      "colour": "red",
-      "items": []
     }
   ],
   "quotes": [
@@ -415,6 +415,13 @@ const DATA = {
       "expiry": "30 Jul 2027"
     }
   ],
+  "riddle": {
+    "date": "2026-09-07",
+    "type": "What am I",
+    "q": "I live between the pump and the pipe. Turn me one way and everything flows, turn me the other and nothing moves. I have a handle but no hands. What am I?",
+    "a": "A valve",
+    "hint": "You close one every time you finish washing your hands."
+  },
   "today": {
     "heading": "Monday 7 September",
     "events": [
@@ -493,8 +500,7 @@ const DATA = {
         }
       ]
     }
-  ],
-  "riddle": {}
+  ]
 };
 
 const SECONDS_PER_SCREEN = 30;
