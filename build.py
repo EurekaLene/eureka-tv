@@ -91,6 +91,15 @@ def main():
         if key not in data:
             sys.exit("The data is missing '%s'. Refusing to build." % key)
 
+    # "insurance" was added after the first three screens, so it is optional on
+    # purpose. A data page written before the scheduled task was updated still
+    # builds, and the template drops the insurance screen from the rotation when
+    # there is nothing in it. Once the task has run, this is always populated.
+    if "insurance" not in data:
+        print("Note: no 'insurance' in the data. "
+              "The insurance screen will be skipped this build.")
+        data["insurance"] = []
+
     template = open(TEMPLATE, encoding="utf-8").read()
     if "/*__DATA__*/{}" not in template:
         sys.exit("template.html has lost its /*__DATA__*/ marker.")
