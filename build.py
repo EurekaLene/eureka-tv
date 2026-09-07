@@ -100,6 +100,13 @@ def main():
               "The insurance screen will be skipped this build.")
         data["insurance"] = []
 
+    # Same again for the riddle. Optional, so an older data page still builds
+    # and the template just leaves that screen out of the rotation.
+    if "riddle" not in data:
+        print("Note: no 'riddle' in the data. "
+              "The riddle screen will be skipped this build.")
+        data["riddle"] = {}
+
     template = open(TEMPLATE, encoding="utf-8").read()
     if "/*__DATA__*/{}" not in template:
         sys.exit("template.html has lost its /*__DATA__*/ marker.")
