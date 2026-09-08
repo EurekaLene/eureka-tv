@@ -191,50 +191,20 @@
    DATA  -  this whole block is replaced automatically each refresh.
    ===================================================================== */
 const DATA = {
-  "generated": "Tuesday 8 September 2026, 10:03am",
+  "generated": "Tuesday 8 September 2026, 11:06am",
   "jobs": [
     {
       "status": "New",
       "colour": "blue",
       "items": [
         {
-          "t": "AIMS – PO T140039",
-          "m": "Supplier PO needed"
-        },
-        {
           "t": "David Toyne – New RO system, 5000L per day"
-        },
-        {
-          "t": "Glencore MIM Copper – demin plant resin",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "Glencore MIM Copper – DN100 regulator",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "Gumlu Seedlings – Pickling, post season"
         },
         {
           "t": "JCU Estate Directorate – Repair leak in 506"
         },
         {
           "t": "JCU Estate Directorate – RO/Demin at TSP"
-        },
-        {
-          "t": "South32 Cannington – Flow meter",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "South32 Cannington – Mill screens x 4",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "South32 Cannington – Seal, PWT/adaptor",
-          "m": "Supplier PO needed"
-        },
-        {
-          "t": "Vinta – Thursday Island service"
         }
       ]
     },
@@ -243,8 +213,12 @@ const DATA = {
       "colour": "amber",
       "items": [
         {
-          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
-          "m": "Required <b>17 Sep</b>"
+          "t": "Glencore MIM Copper – DN100 regulator",
+          "m": "Supplier PO needed"
+        },
+        {
+          "t": "Vinta – Thursday Island service",
+          "m": "Supplier PO needed"
         }
       ]
     },
@@ -255,6 +229,25 @@ const DATA = {
         {
           "t": "South32 Cannington – Grundfos CRI 20-5 vertical multistage pump",
           "m": "Required <b>11 Sep</b>"
+        },
+        {
+          "t": "South32 Cannington – Burkert solenoid valve 1/2\" BSPP 24VDC",
+          "m": "Required <b>17 Sep</b>"
+        },
+        {
+          "t": "AIMS – PO T140039"
+        },
+        {
+          "t": "Glencore MIM Copper – demin plant resin"
+        },
+        {
+          "t": "South32 Cannington – Flow meter"
+        },
+        {
+          "t": "South32 Cannington – Mill screens x 4"
+        },
+        {
+          "t": "South32 Cannington – Seal, PWT/adaptor"
         }
       ]
     },
@@ -266,12 +259,11 @@ const DATA = {
     {
       "status": "In workshop",
       "colour": "pink",
-      "items": []
-    },
-    {
-      "status": "On hold",
-      "colour": "red",
-      "items": []
+      "items": [
+        {
+          "t": "Gumlu Seedlings – Pickling, post season"
+        }
+      ]
     },
     {
       "status": "Analysis / Supervision",
@@ -290,6 +282,11 @@ const DATA = {
           "t": "Glencore MIM Copper – RO/EDI design"
         }
       ]
+    },
+    {
+      "status": "On hold",
+      "colour": "red",
+      "items": []
     }
   ],
   "quotes": [
@@ -312,12 +309,12 @@ const DATA = {
       "colour": "blue",
       "items": [
         {
-          "t": "TEST - JBS Australia Townsville - softener salt resupply",
-          "m": "<b>260904JBS1</b> &nbsp;&#183;&nbsp; Lene &nbsp;&#183;&nbsp; Due 10 Sep"
-        },
-        {
           "t": "Glencore MIM Copper – MX25B heat exchanger plates",
           "m": "<b>260904GLE1</b> &nbsp;&#183;&nbsp; Andrew Simon"
+        },
+        {
+          "t": "TEST - JBS Australia Townsville - softener salt resupply",
+          "m": "<b>260904JBS1</b> &nbsp;&#183;&nbsp; Lene &nbsp;&#183;&nbsp; Due 10 Sep"
         }
       ]
     },
@@ -432,17 +429,6 @@ const DATA = {
       "expiry": "30 Jul 2027"
     }
   ],
-  "riddle": {
-    "date": "2026-09-08",
-    "type": "Emoji phrase",
-    "q": "🌧️🐱🐶",
-    "a": "Raining cats and dogs",
-    "hint": "Something you might say in a wet season downpour.",
-    "prev": {
-      "q": "I live between the pump and the pipe. Turn me one way and everything flows, turn me the other and nothing moves. I have a handle but no hands. What am I?",
-      "a": "A valve"
-    }
-  },
   "today": {
     "heading": "Tuesday 8 September",
     "events": [
@@ -505,7 +491,18 @@ const DATA = {
       "weekend": false,
       "events": []
     }
-  ]
+  ],
+  "riddle": {
+    "date": "2026-09-08",
+    "type": "Emoji phrase",
+    "q": "🌧️🐱🐶",
+    "a": "Raining cats and dogs",
+    "hint": "Something you might say in a wet season downpour.",
+    "prev": {
+      "q": "I live between the pump and the pipe. Turn me one way and everything flows, turn me the other and nothing moves. I have a handle but no hands. What am I?",
+      "a": "A valve"
+    }
+  }
 };
 
 const SECONDS_PER_SCREEN = 30;
