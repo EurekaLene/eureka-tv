@@ -153,12 +153,39 @@
   .r-insured{border-left-color:var(--green)}
   .r-insured .st{color:var(--green)} .r-insured .dy{color:var(--text)}
 
+  /* ---------- registration screen ----------
+     Same table as insurance with one extra column saying whether the rego
+     renews itself. Colour follows who has to act: red and amber are only
+     for manual renewals, an auto-renewing rego near its date is purple. */
+  .insrow.rg5{grid-template-columns:1fr 200px 150px 170px 190px}
+  .insrow .rn{font-size:18px;font-weight:600;letter-spacing:.8px;text-transform:uppercase}
+  .insrow .rn.man{color:var(--text)}
+  .insrow .rn.aut{color:var(--dim)}
+  .r-current{border-left-color:var(--green)}
+  .r-current .st{color:var(--green)} .r-current .dy{color:var(--text)}
+  .r-auto{border-left-color:var(--purple)}
+  .r-auto .st,.r-auto .dy{color:var(--purple)}
+
   /* ---------- riddle screen ----------
      Today's puzzle with no answer, and yesterday's puzzle with its answer
      revealed underneath. Answering today's on the same screen would remove
      the only reason to look again tomorrow. */
   .ridwrap{display:flex;flex-direction:column;gap:26px;height:100%}
-  .ridmain{flex:1;min-height:0;background:var(--panel);border:1px solid var(--line);
+  .ridtop{flex:1;min-height:0;display:flex;gap:26px}
+  /* Christmas countdown, a narrow card beside the riddle. Worked out in the
+     browser from the TV's own clock, so it needs nothing from the data. */
+  .xmas{flex:0 0 400px;background:var(--panel);border:1px solid var(--line);
+    border-top:5px solid var(--red);border-radius:14px;padding:32px 28px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;gap:14px}
+  .xmas .xk{font-size:20px;letter-spacing:1.6px;text-transform:uppercase;
+    color:var(--dimmer);font-weight:600}
+  .xmas .xn{font-size:180px;font-weight:700;line-height:1;color:var(--red);
+    font-variant-numeric:tabular-nums;letter-spacing:-4px}
+  .xmas .xl{font-size:30px;font-weight:600;line-height:1.25}
+  .xmas .xd{font-size:21px;color:var(--dim)}
+  .xmas.day .xn{font-size:120px;letter-spacing:0}
+  .ridmain{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
     border-radius:14px;padding:40px 64px;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;gap:28px}
   .ridkind{font-size:20px;letter-spacing:1.6px;text-transform:uppercase;
@@ -227,12 +254,26 @@ const SECONDS_PER_SCREEN = 30;
         <div class="inslist" id="insList"></div>
       </div>
     </section>
+    <section class="screen" id="s5">
+      <div class="inswrap">
+        <div class="insstats" id="regStats"></div>
+        <div class="inslist" id="regList"></div>
+      </div>
+    </section>
     <section class="screen" id="s4">
       <div class="ridwrap">
-        <div class="ridmain">
-          <div class="ridkind" id="ridKind"></div>
-          <div class="ridq" id="ridQ"></div>
-          <div class="ridhint" id="ridHint"></div>
+        <div class="ridtop">
+          <div class="ridmain" id="ridMain">
+            <div class="ridkind" id="ridKind"></div>
+            <div class="ridq" id="ridQ"></div>
+            <div class="ridhint" id="ridHint"></div>
+          </div>
+          <div class="xmas" id="xmas">
+            <div class="xk">Countdown</div>
+            <div class="xn" id="xmasN"></div>
+            <div class="xl" id="xmasL"></div>
+            <div class="xd" id="xmasD"></div>
+          </div>
         </div>
         <div class="ridprev" id="ridPrev">
           <span class="plab">Yesterday</span>
@@ -467,6 +508,100 @@ const SECONDS_PER_SCREEN = 30;
     }
   }
 
+  /* ---------- registration ----------
+     "rego" arrived after insurance. Optional in the same way: no rows means
+     the screen is dropped from the rotation.
+     The data carries two plain facts per row, the date state and whether it
+     auto-renews. The colour decision is made here, not in the scheduled task:
+       auto-renewing and due soon, or expired by up to AUTO_GRACE days -> purple
+       "Auto-renew", because nobody has to do anything;
+       auto-renewing but expired longer than that -> red, because the renewal
+       has evidently not gone through;
+       manual -> red when expired, amber when due soon. */
+  var regRows = (DATA.rego || []).filter(function(r){ return r && r.t; });
+  var AUTO_GRACE = 14;
+  var MAX_REG_ROWS = 14;
+
+  function regLook(r){
+    if (r.state === "expired"){
+      if (r.auto && typeof r.days === "number" && r.days <= AUTO_GRACE){
+        return { cls:"r-auto", lab:"Auto-renew", bucket:"auto" };
+      }
+      return { cls:"r-expired", lab:"Expired", bucket:"expired" };
+    }
+    if (r.state === "soon"){
+      return r.auto ? { cls:"r-auto", lab:"Auto-renew", bucket:"auto" }
+                    : { cls:"r-soon", lab:"Due soon",   bucket:"soon" };
+    }
+    if (r.state === "current"){
+      return { cls:"r-current", lab:"Current", bucket:"current" };
+    }
+    return { cls:"r-nodate", lab:"No date", bucket:"nodate" };
+  }
+
+  var REG_STATS = [
+    { k:"expired", cls:"red",    lab:"Expired" },
+    { k:"soon",    cls:"amber",  lab:"Manual renewal<br>due within 30 days" },
+    { k:"auto",    cls:"purple", lab:"Auto-renewing<br>shortly", hideWhenZero:true },
+    { k:"nodate",  cls:"purple", lab:"No rego date<br>recorded", hideWhenZero:true },
+    { k:"current", cls:"green",  lab:"Current" }
+  ];
+
+  function buildRego(){
+    var count = { expired:0, soon:0, auto:0, nodate:0, current:0 };
+    regRows.forEach(function(r){ count[regLook(r).bucket]++; });
+
+    var host = document.getElementById("regStats");
+    host.innerHTML = "";
+    REG_STATS.forEach(function(s){
+      var n = count[s.k];
+      if (s.hideWhenZero && !n){ return; }
+      var d = document.createElement("div");
+      d.className = "stat " + s.cls + (n ? "" : " zero");
+      d.innerHTML = '<span class="num">' + n + '</span>' +
+                    '<span class="lab">' + s.lab + '</span>';
+      host.appendChild(d);
+    });
+
+    var list = document.getElementById("regList");
+    list.innerHTML =
+      '<div class="insrow rg5 head"><span>Vehicle</span><span>Status</span>' +
+      '<span>Renewal</span><span class="dy">Days</span>' +
+      '<span class="ex">Rego due</span></div>';
+
+    var shown = regRows, hidden = 0;
+    if (shown.length > MAX_REG_ROWS){
+      hidden = shown.length - (MAX_REG_ROWS - 1);
+      shown = shown.slice(0, MAX_REG_ROWS - 1);
+    }
+
+    shown.forEach(function(r){
+      var st = regLook(r);
+      var days = "&#8212;";
+      if (typeof r.days === "number"){
+        days = r.days + "<small>" +
+               (r.state === "expired" ? "over" : "left") + "</small>";
+      }
+      var row = document.createElement("div");
+      row.className = "insrow rg5 " + st.cls;
+      row.innerHTML =
+        '<div class="nm">' + r.t + ' <span class="rg">&#183; ' +
+          (r.rego || "&#8212;") + '</span></div>' +
+        '<div class="st">' + st.lab + '</div>' +
+        '<div class="rn ' + (r.auto ? 'aut">Auto' : 'man">Manual') + '</div>' +
+        '<div class="dy">' + days + '</div>' +
+        '<div class="ex">' + (r.expiry || "&#8212;") + '</div>';
+      list.appendChild(row);
+    });
+
+    if (hidden){
+      var more = document.createElement("div");
+      more.className = "insmore";
+      more.textContent = "+ " + hidden + " more";
+      list.appendChild(more);
+    }
+  }
+
   /* ---------- riddle ----------
      Optional, like insurance. No riddle on the page means the screen is left
      out of the rotation rather than showing an empty card. */
@@ -492,6 +627,38 @@ const SECONDS_PER_SCREEN = 30;
       prev.className = "ridprev";
     } else {
       prev.className = "ridprev off";
+    }
+  }
+
+  /* ---------- Christmas countdown ----------
+     Days from today's date on the TV to 25 December, counted on calendar
+     dates rather than hours so it ticks over at midnight. On the day it says
+     so; from Boxing Day it counts to next year. The page reloads every ten
+     minutes, which keeps the number right across midnight. */
+  function buildXmas(){
+    var now = new Date();
+    var y = now.getFullYear();
+    var today = Date.UTC(y, now.getMonth(), now.getDate());
+    var xmas = Date.UTC(y, 11, 25);
+    if (today > xmas){ xmas = Date.UTC(y + 1, 11, 25); }
+    var n = Math.round((xmas - today) / 86400000);
+
+    var box = document.getElementById("xmas");
+    var N = document.getElementById("xmasN");
+    var L = document.getElementById("xmasL");
+    var D = document.getElementById("xmasD");
+    var wd = DAYS[new Date(xmas).getUTCDay()];
+
+    if (n === 0){
+      box.className = "xmas day";
+      N.textContent = "🎄";
+      L.textContent = "Merry Christmas!";
+      D.textContent = "";
+    } else {
+      box.className = "xmas";
+      N.textContent = n;
+      L.textContent = (n === 1 ? "day" : "days") + " until Christmas";
+      D.textContent = wd + " 25 December " + new Date(xmas).getUTCFullYear();
     }
   }
 
@@ -521,10 +688,15 @@ const SECONDS_PER_SCREEN = 30;
     NAMES.push("Insurance");
     screens.push(document.getElementById("s3"));
   }
-  if (rid){
-    NAMES.push("Riddle");
-    screens.push(document.getElementById("s4"));
+  if (regRows.length){
+    NAMES.push("Registration");
+    screens.push(document.getElementById("s5"));
   }
+  /* The riddle screen also carries the Christmas countdown, which needs no
+     data, so this screen is always in the rotation. With no riddle on the
+     data page the countdown has the screen to itself. */
+  NAMES.push(rid ? "Riddle" : "Countdown");
+  screens.push(document.getElementById("s4"));
 
   /* One dot per screen, built to match however many screens we ended up with. */
   var dotHost = document.getElementById("dots"), dots = [];
@@ -569,7 +741,15 @@ const SECONDS_PER_SCREEN = 30;
   buildCols("quoteCols", DATA.quotes, false);
   buildCalendar();
   if (insRows.length){ buildInsurance(); }
-  if (rid){ buildRiddle(); }
+  if (regRows.length){ buildRego(); }
+  if (rid){
+    buildRiddle();
+  } else {
+    document.getElementById("ridMain").className = "ridmain off";
+    document.getElementById("ridPrev").className = "ridprev off";
+    document.getElementById("xmas").style.flex = "1";
+  }
+  buildXmas();
   show(0);
 })();
 </script>

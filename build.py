@@ -100,6 +100,12 @@ def main():
               "The insurance screen will be skipped this build.")
         data["insurance"] = []
 
+    # Same again for vehicle registration.
+    if "rego" not in data:
+        print("Note: no 'rego' in the data. "
+              "The registration screen will be skipped this build.")
+        data["rego"] = []
+
     # Same again for the riddle. Optional, so an older data page still builds
     # and the template just leaves that screen out of the rotation.
     if "riddle" not in data:
