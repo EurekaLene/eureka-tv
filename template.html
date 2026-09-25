@@ -679,7 +679,7 @@ const SECONDS_PER_SCREEN = 30;
   document.getElementById("stamp").textContent = "Updated " + DATA.generated;
 
   /* ---------- rotation ---------- */
-  var NAMES = ["Jobs", "Quotes", "Calendar"];
+  var NAMES = ["Jobs", "Request for Quotes", "Calendar"];
   var screens = [document.getElementById("s0"),
                  document.getElementById("s1"),
                  document.getElementById("s2")];
@@ -738,7 +738,12 @@ const SECONDS_PER_SCREEN = 30;
   setTimeout(function(){ location.reload(); }, 10*60*1000);
 
   buildCols("jobCols",   DATA.jobs, true);
-  buildCols("quoteCols", DATA.quotes, false);
+  /* Quotes already sent are off the wall: the screen is about RFQs still
+     being worked on. The data page still carries the group; it is dropped
+     here so there is one place to change if it is ever wanted back. */
+  buildCols("quoteCols", DATA.quotes.filter(function(g){
+    return g.status !== "Quote sent";
+  }), false);
   buildCalendar();
   if (insRows.length){ buildInsurance(); }
   if (regRows.length){ buildRego(); }
