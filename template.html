@@ -173,7 +173,7 @@
   .ridwrap{display:flex;flex-direction:column;gap:26px;height:100%}
   .ridtop{flex:1;min-height:0;display:flex;gap:26px}
   /* Christmas countdown, a narrow card beside the riddle. Worked out in the
-     browser from the TV's own clock, so it needs nothing from the data. */
+     browser in Brisbane time, so it needs nothing from the data. */
   .xmas{flex:0 0 400px;background:var(--panel);border:1px solid var(--line);
     border-top:5px solid var(--red);border-radius:14px;padding:32px 28px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -636,9 +636,9 @@ const SECONDS_PER_SCREEN = 30;
      so; from Boxing Day it counts to next year. The page reloads every ten
      minutes, which keeps the number right across midnight. */
   function buildXmas(){
-    var now = new Date();
-    var y = now.getFullYear();
-    var today = Date.UTC(y, now.getMonth(), now.getDate());
+    var now = brisbaneNow();
+    var y = now.getUTCFullYear();
+    var today = Date.UTC(y, now.getUTCMonth(), now.getUTCDate());
     var xmas = Date.UTC(y, 11, 25);
     if (today > xmas){ xmas = Date.UTC(y + 1, 11, 25); }
     var n = Math.round((xmas - today) / 86400000);
@@ -666,13 +666,20 @@ const SECONDS_PER_SCREEN = 30;
   var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
   var MONTHS = ["January","February","March","April","May","June","July",
                 "August","September","October","November","December"];
+  /* Brisbane is UTC+10 all year with no daylight saving. Work it out from
+     UTC so the wall shows Brisbane time whatever time zone the TV is set to
+     (a TV set to Sydney or Melbourne runs an hour ahead from October to April).
+     Read the result with the getUTC... methods only. */
+  function brisbaneNow(){
+    return new Date(Date.now() + 10 * 3600000);
+  }
   function tick(){
-    var d = new Date(), h = d.getHours(), m = d.getMinutes();
+    var d = brisbaneNow(), h = d.getUTCHours(), m = d.getUTCMinutes();
     var ap = h < 12 ? "am" : "pm", h12 = h % 12 || 12;
     document.getElementById("clock").textContent =
       h12 + ":" + (m<10?"0":"") + m + ap;
     document.getElementById("dayline").textContent =
-      DAYS[d.getDay()] + " " + d.getDate() + " " + MONTHS[d.getMonth()];
+      DAYS[d.getUTCDay()] + " " + d.getUTCDate() + " " + MONTHS[d.getUTCMonth()];
   }
   tick(); setInterval(tick, 10000);
 
