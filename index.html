@@ -202,6 +202,31 @@
   .ridprev .pq{font-size:21px;color:var(--dim);flex:1;min-width:0;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}
   .ridprev .pa{font-size:26px;font-weight:700;color:var(--green);flex:0 0 auto}
+  /* ---------- customer service toolbox talk (static, no data) ---------- */
+  .cswrap{display:flex;flex-direction:column;height:100%;gap:16px}
+  .csstages{display:flex;align-items:center;gap:18px;font-size:16px;letter-spacing:2.4px;
+    text-transform:uppercase;color:var(--dimmer);font-weight:600}
+  .csstages .ln{flex:1;height:1px;background:var(--line);position:relative}
+  .csstages .ln::after{content:"";position:absolute;right:-1px;top:-5px;
+    border:5px solid transparent;border-left:8px solid var(--line)}
+  .csgrid{flex:1;min-height:0;display:grid;grid-template-columns:repeat(4,1fr);
+    grid-template-rows:1fr 1fr;gap:18px}
+  .cs{background:var(--panel);border:1px solid var(--line);border-top:5px solid var(--c);
+    border-radius:14px;padding:16px 22px 12px;display:flex;flex-direction:column;min-height:0}
+  .cs h4{font-size:27px;font-weight:700;line-height:1.15;display:flex;align-items:baseline;gap:12px}
+  .cs h4 .n{font-size:20px;font-weight:700;color:var(--c);font-variant-numeric:tabular-nums}
+  .cs .why{font-size:18px;font-style:italic;color:var(--dim);line-height:1.3;margin:7px 0 10px}
+  .cs ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .cs li{font-size:20px;line-height:1.26;padding-left:22px;position:relative}
+  .cs li::before{content:"";position:absolute;left:2px;top:10px;width:9px;height:9px;
+    border-radius:50%;background:var(--c)}
+  .cscheck{flex:0 0 auto;display:flex;align-items:stretch;gap:28px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:14px;padding:16px 26px}
+  .cscheck .lab{flex:0 0 260px;font-size:15px;letter-spacing:2px;text-transform:uppercase;
+    color:var(--green);font-weight:700;line-height:1.5;align-self:center}
+  .cscheck .q{flex:1;align-self:center;border-left:4px solid var(--green);padding-left:18px}
+  .cscheck .q b{display:block;font-size:24px;font-weight:700}
+  .cscheck .q span{font-size:18px;color:var(--dim)}
   .off{display:none!important}
 
   footer{flex:0 0 46px;height:46px;display:flex;align-items:center;padding:0 48px;
@@ -914,6 +939,27 @@ const SECONDS_PER_SCREEN = 30;
         <div class="inslist" id="regList"></div>
       </div>
     </section>
+    <section class="screen" id="s6">
+      <div class="cswrap">
+        <div class="csstages"><span>First contact</span><span class="ln"></span><span>Quote and job</span><span class="ln"></span><span>On site</span><span class="ln"></span><span>After the job</span></div>
+        <div class="csgrid">
+          <div class="cs" style="--c:var(--blue)"><h4><span class="n">01</span>First impressions</h4><div class="why">Customers judge us before the work starts.</div><ul><li>Reply fast, even if it is only to say when you will have an answer</li><li>Answer the phone with the business name and your name</li><li>Arrive on time, prepared and presentable</li><li>Quotes show scope, exclusions and validity, not just a price</li></ul></div>
+          <div class="cs" style="--c:var(--green)"><h4><span class="n">02</span>Listening and questions</h4><div class="why">Understand the problem before offering a fix.</div><ul><li>Ask before you recommend</li><li>Find the real problem behind the request</li><li>Repeat back what you heard to confirm it</li><li>Work out who decides, who uses it and who pays</li></ul></div>
+          <div class="cs" style="--c:var(--purple)"><h4><span class="n">03</span>Setting expectations</h4><div class="why">Most complaints come from a gap between what was expected and what was delivered.</div><ul><li>Agree in writing what “done” looks like</li><li>Give timing news early, good or bad</li><li>Say plainly what the system will not do</li><li>Explain ongoing maintenance and running costs up front</li></ul></div>
+          <div class="cs" style="--c:#2bb8a6"><h4><span class="n">04</span>Explaining technical things</h4><div class="why">If they do not understand it, they will not buy it or trust it.</div><ul><li>Match the detail to the person in front of you</li><li>Swap jargon for everyday words</li><li>Offer two or three options with a clear recommendation</li><li>Leave them able to check the system themselves</li></ul></div>
+          <div class="cs" style="--c:var(--amber)"><h4><span class="n">05</span>Price and value</h4><div class="why">Customers compare price. Help them compare value.</div><ul><li>Talk cost over the life of the system, not just upfront</li><li>Explain what is different about a cheaper quote</li><li>Adjust scope before you cut price</li><li>Flag variations before doing the extra work</li></ul></div>
+          <div class="cs" style="--c:var(--red)"><h4><span class="n">06</span>Difficult moments</h4><div class="why">How we handle problems matters more than whether we have them.</div><ul><li>Listen first, fix second, blame never</li><li>Own our mistakes quickly and say how we will fix them</li><li>Hold the line on safety and compliance</li><li>Know when and who to escalate to</li></ul></div>
+          <div class="cs" style="--c:#9bbf3a"><h4><span class="n">07</span>On site</h4><div class="why">Every site visit is a reference check.</div><ul><li>Follow site rules: sign in, PPE, permits</li><li>Tell operators before you isolate anything</li><li>Leave the area cleaner than you found it</li><li>Report problems you notice, even outside your job</li></ul></div>
+          <div class="cs" style="--c:var(--blue)"><h4><span class="n">08</span>Follow-up and loyalty</h4><div class="why">Keeping a customer costs less than winning a new one.</div><ul><li>Check in after every job</li><li>Offer scheduled servicing, not just breakdown callouts</li><li>Record customer and site history where everyone can find it</li><li>Notice when a regular customer goes quiet</li></ul></div>
+        </div>
+        <div class="cscheck">
+          <div class="lab">Before you end any customer conversation, check</div>
+          <div class="q"><b>Do they know what happens next?</b><span>The next step, who does it and when.</span></div>
+          <div class="q"><b>Did we do what we said we would?</b><span>If not, have we told them why?</span></div>
+          <div class="q"><b>Would they call us again?</b><span>If unsure, ask them.</span></div>
+        </div>
+      </div>
+    </section>
     <section class="screen" id="s4">
       <div class="ridwrap">
         <div class="ridtop">
@@ -1356,6 +1402,10 @@ const SECONDS_PER_SCREEN = 30;
   /* The riddle screen also carries the Christmas countdown, which needs no
      data, so this screen is always in the rotation. With no riddle on the
      data page the countdown has the screen to itself. */
+  /* Customer service toolbox talk. Fixed content, needs no data, always shown. */
+  NAMES.push("Dealing with customers");
+  screens.push(document.getElementById("s6"));
+
   NAMES.push(rid ? "Riddle" : "Countdown");
   screens.push(document.getElementById("s4"));
 
