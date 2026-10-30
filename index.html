@@ -174,17 +174,35 @@
   .ridtop{flex:1;min-height:0;display:flex;gap:26px}
   /* Christmas countdown, a narrow card beside the riddle. Worked out in the
      browser in Brisbane time, so it needs nothing from the data. */
-  .xmas{flex:0 0 400px;background:var(--panel);border:1px solid var(--line);
-    border-top:5px solid var(--red);border-radius:14px;padding:32px 28px;
+  .xmas{flex:0 0 400px;position:relative;overflow:hidden;border-radius:14px;
+    border:1px solid #4a1d22;
+    background:radial-gradient(ellipse at 50% 38%,#7a1c24 0%,#4e0f16 55%,#2a080c 100%);
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;gap:14px}
-  .xmas .xk{font-size:20px;letter-spacing:1.6px;text-transform:uppercase;
-    color:var(--dimmer);font-weight:600}
-  .xmas .xn{font-size:180px;font-weight:700;line-height:1;color:var(--red);
-    font-variant-numeric:tabular-nums;letter-spacing:-4px}
-  .xmas .xl{font-size:30px;font-weight:600;line-height:1.25}
-  .xmas .xd{font-size:21px;color:var(--dim)}
-  .xmas.day .xn{font-size:120px;letter-spacing:0}
+    text-align:center;gap:10px;padding:150px 24px 175px}
+  .xmas > *{position:relative;z-index:2}
+  .xmas .deco{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .xmas .xk{font-size:20px;letter-spacing:3px;text-transform:uppercase;
+    color:#f4d58d;font-weight:700}
+  .xmas .xn{font-size:170px;font-weight:800;line-height:1;color:#fff;
+    font-variant-numeric:tabular-nums;letter-spacing:-4px;
+    text-shadow:0 0 28px rgba(255,90,90,.55),0 4px 0 #8f1d26}
+  .xmas .xl{font-size:30px;font-weight:700;line-height:1.25;color:#fff}
+  .xmas .xd{font-size:20px;color:#f1c9c9}
+  .xmas.day .xn{font-size:110px;letter-spacing:0}
+  /* garland and baubles, swinging gently */
+  .xmas .bb{transform-box:fill-box;transform-origin:50% 0;animation:swing 4.5s ease-in-out infinite}
+  .xmas .bb:nth-child(2n){animation-duration:5.3s;animation-delay:-1.2s}
+  .xmas .bb:nth-child(3n){animation-duration:3.9s;animation-delay:-2.4s}
+  @keyframes swing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+  /* snow */
+  .xmas .snow{position:absolute;inset:0;z-index:1;pointer-events:none}
+  .xmas .snow i{position:absolute;top:-10px;border-radius:50%;background:#fff;opacity:.8;
+    animation:fall linear infinite}
+  @keyframes fall{to{transform:translate(18px,800px)}}
+  .xmas .santa{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);z-index:1;
+    animation:peek 6s ease-in-out infinite}
+  @keyframes peek{0%,100%{transform:translate(-50%,6px)}50%{transform:translate(-50%,-4px)}}
+  @media (prefers-reduced-motion:reduce){.xmas .bb,.xmas .snow i,.xmas .santa{animation:none}}
   .ridmain{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
     border-radius:14px;padding:40px 64px;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;gap:28px}
@@ -1097,6 +1115,33 @@ const SECONDS_PER_SCREEN = 30;
             <div class="ridhint" id="ridHint"></div>
           </div>
           <div class="xmas" id="xmas">
+            <svg class="deco" viewBox="0 0 400 160" preserveAspectRatio="xMidYMin meet" style="height:auto;bottom:auto" aria-hidden="true">
+              <path d="M-10 18 Q40 58 90 26 Q140 62 200 28 Q260 62 310 26 Q360 58 410 18" fill="none" stroke="#1f6b3a" stroke-width="14" stroke-linecap="round"/>
+              <path d="M-10 18 Q40 58 90 26 Q140 62 200 28 Q260 62 310 26 Q360 58 410 18" fill="none" stroke="#2f8f4e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/>
+              <g>
+                <g class="bb"><line x1="40" y1="40" x2="40" y2="78" stroke="#e8c46a" stroke-width="1.5"/><rect x="34" y="74" width="12" height="8" rx="2" fill="#e8c46a"/><circle cx="40" cy="96" r="16" fill="#d7263d"/><circle cx="35" cy="90" r="5" fill="#fff" opacity=".45"/></g>
+                <g class="bb"><line x1="118" y1="44" x2="118" y2="104" stroke="#e8c46a" stroke-width="1.5"/><rect x="112" y="100" width="12" height="8" rx="2" fill="#e8c46a"/><circle cx="118" cy="124" r="19" fill="#f4c542"/><path d="M100 120 Q118 112 136 120" stroke="#d7263d" stroke-width="3" fill="none"/><circle cx="112" cy="117" r="5" fill="#fff" opacity=".5"/></g>
+                <g class="bb"><line x1="200" y1="44" x2="200" y2="66" stroke="#e8c46a" stroke-width="1.5"/><polygon points="200,62 205,76 220,76 208,85 213,100 200,91 187,100 192,85 180,76 195,76" fill="#f4d58d"/></g>
+                <g class="bb"><line x1="282" y1="44" x2="282" y2="96" stroke="#e8c46a" stroke-width="1.5"/><rect x="276" y="92" width="12" height="8" rx="2" fill="#e8c46a"/><circle cx="282" cy="116" r="19" fill="#2f8f4e"/><path d="M264 112 Q282 104 300 112 M264 120 Q282 128 300 120" stroke="#f4d58d" stroke-width="2.5" fill="none"/><circle cx="276" cy="109" r="5" fill="#fff" opacity=".45"/></g>
+                <g class="bb"><line x1="360" y1="40" x2="360" y2="70" stroke="#e8c46a" stroke-width="1.5"/><rect x="354" y="66" width="12" height="8" rx="2" fill="#e8c46a"/><circle cx="360" cy="88" r="15" fill="#3a7bd5"/><circle cx="355" cy="83" r="4.5" fill="#fff" opacity=".45"/></g>
+              </g>
+            </svg>
+            <div class="snow" id="xmasSnow" aria-hidden="true"></div>
+            <svg class="santa" width="230" height="170" viewBox="0 0 230 170" aria-hidden="true">
+              <!-- hat -->
+              <path d="M55 70 Q70 8 150 18 Q190 24 200 70 Z" fill="#d7263d"/>
+              <path d="M150 18 Q205 20 212 58" fill="none" stroke="#d7263d" stroke-width="22" stroke-linecap="round"/>
+              <circle cx="214" cy="62" r="14" fill="#fff"/>
+              <rect x="44" y="62" width="160" height="26" rx="13" fill="#fff"/>
+              <!-- face -->
+              <ellipse cx="124" cy="112" rx="52" ry="40" fill="#f5c9a8"/>
+              <circle cx="104" cy="104" r="5" fill="#2a1a1a"/><circle cx="144" cy="104" r="5" fill="#2a1a1a"/>
+              <circle cx="92" cy="120" r="9" fill="#ef8f8f" opacity=".7"/><circle cx="156" cy="120" r="9" fill="#ef8f8f" opacity=".7"/>
+              <circle cx="124" cy="118" r="8" fill="#e9a48a"/>
+              <!-- beard and moustache -->
+              <path d="M66 118 Q70 175 124 176 Q178 175 182 118 Q160 140 124 138 Q88 140 66 118 Z" fill="#fff"/>
+              <path d="M124 126 Q104 118 92 132 Q110 138 124 130 Q138 138 156 132 Q144 118 124 126 Z" fill="#f1f1f1" stroke="#e3e3e3"/>
+            </svg>
             <div class="xk">Countdown</div>
             <div class="xn" id="xmasN"></div>
             <div class="xl" id="xmasL"></div>
@@ -1489,6 +1534,20 @@ const SECONDS_PER_SCREEN = 30;
       D.textContent = wd + " 25 December " + new Date(xmas).getUTCFullYear();
     }
   }
+
+  /* falling snow in the Christmas card, built once */
+  (function(){
+    var host = document.getElementById("xmasSnow"); if (!host) return;
+    for (var k = 0; k < 34; k++){
+      var f = document.createElement("i"), s = 3 + (k * 7 % 6);
+      f.style.left = (k * 37 % 100) + "%";
+      f.style.width = f.style.height = s + "px";
+      f.style.animationDuration = (7 + (k * 13 % 9)) + "s";
+      f.style.animationDelay = (-(k * 1.7 % 12)) + "s";
+      f.style.opacity = (0.35 + (k % 5) * 0.12).toFixed(2);
+      host.appendChild(f);
+    }
+  })();
 
   /* ---------- clock ---------- */
   var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
