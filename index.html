@@ -227,6 +227,37 @@
   .cscheck .q{flex:1;align-self:center;border-left:4px solid var(--green);padding-left:18px}
   .cscheck .q b{display:block;font-size:24px;font-weight:700}
   .cscheck .q span{font-size:18px;color:var(--dim)}
+  /* ---------- sales and quoting vs budget (percentages only, no dollars) ---------- */
+  .sbwrap{display:grid;grid-template-columns:1fr 1fr 380px;grid-template-rows:1fr auto;gap:22px;height:100%}
+  .sbcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px 30px 22px;
+    display:flex;flex-direction:column;min-height:0}
+  .sbh{font-size:19px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);font-weight:700}
+  .sbsub{font-size:18px;color:var(--dimmer);margin-top:4px}
+  .sbdial{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+  .sbdial svg{width:100%;height:100%;max-height:390px}
+  .sbfoot{display:flex;align-items:center;justify-content:center;gap:14px;font-size:21px;color:var(--dim)}
+  .pill{font-size:17px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:999px;padding:5px 14px}
+  .pill.g{background:rgba(63,185,80,.16);color:var(--green)}
+  .pill.a{background:rgba(227,160,8,.16);color:var(--amber)}
+  .pill.r{background:rgba(248,81,73,.16);color:var(--red)}
+  .sbstats{display:flex;flex-direction:column;gap:22px;min-height:0}
+  .sbstat{flex:1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 26px;
+    display:flex;flex-direction:column;justify-content:center;gap:6px}
+  .sbstat .k{font-size:17px;letter-spacing:1.8px;text-transform:uppercase;color:var(--dim);font-weight:700}
+  .sbstat .v{font-size:58px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+  .sbstat .s{font-size:18px;color:var(--dimmer)}
+  .sbfy{grid-column:1/-1;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 30px 20px}
+  .sbfy .top{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:16px}
+  .sbfy .nums{font-size:24px;color:var(--dim)}
+  .sbfy .nums b{color:var(--text);font-size:30px;font-variant-numeric:tabular-nums}
+  .sbtrack{position:relative;height:34px;background:#1e2733;border-radius:17px;overflow:hidden}
+  .sbtrack .el{position:absolute;left:0;top:0;bottom:0;background:rgba(74,158,255,.30);border-radius:17px}
+  .sbtrack .won{position:absolute;left:0;top:9px;bottom:9px;background:var(--green);border-radius:8px}
+  .sbtrack .now{position:absolute;top:0;bottom:0;width:3px;background:var(--text)}
+  .sbticks{display:grid;grid-template-columns:repeat(12,1fr);margin-top:8px;font-size:17px;color:var(--dimmer)}
+  .sbticks span{border-left:1px solid var(--line);padding-left:6px}
+  .sbleg{display:flex;gap:28px;margin-top:12px;font-size:18px;color:var(--dim)}
+  .sbleg i{display:inline-block;width:16px;height:16px;border-radius:4px;margin-right:8px;vertical-align:-2px}
   .off{display:none!important}
 
   footer{flex:0 0 46px;height:46px;display:flex;align-items:center;padding:0 48px;
@@ -1029,6 +1060,34 @@ const SECONDS_PER_SCREEN = 30;
         </div>
       </div>
     </section>
+    <section class="screen" id="s7">
+      <div class="sbwrap">
+        <div class="sbcard">
+          <div class="sbh">Total sales year to date vs budget</div>
+          <div class="sbsub">Invoiced plus won, against budget for the year so far</div>
+          <div class="sbdial"><svg id="sbDial1" viewBox="0 0 400 260"></svg></div>
+          <div class="sbfoot" id="sbFoot1"></div>
+        </div>
+        <div class="sbcard">
+          <div class="sbh">Weighted quotes vs budget</div>
+          <div class="sbsub">3-month moving average, against monthly budget</div>
+          <div class="sbdial"><svg id="sbDial2" viewBox="0 0 400 260"></svg></div>
+          <div class="sbfoot" id="sbFoot2"></div>
+        </div>
+        <div class="sbstats">
+          <div class="sbstat"><div class="k">Win rate this year</div><div class="v" id="sbWin"></div><div class="s" id="sbWinS"></div></div>
+          <div class="sbstat"><div class="k">Quotes sent this month</div><div class="v" id="sbSent"></div><div class="s" id="sbSentS"></div></div>
+          <div class="sbstat"><div class="k">Projected FY close</div><div class="v" id="sbProj"></div><div class="s">of annual budget, at the current rate</div></div>
+        </div>
+        <div class="sbfy">
+          <div class="top"><div class="sbh">Financial year progress</div>
+            <div class="nums"><b id="sbGone"></b> of the year gone &nbsp;&#183;&nbsp; <b id="sbBud"></b> of budget invoiced or won</div></div>
+          <div class="sbtrack"><i class="el" id="sbEl"></i><i class="won" id="sbWon"></i><span class="now" id="sbNow"></span></div>
+          <div class="sbticks"><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span></div>
+          <div class="sbleg"><span><i style="background:rgba(74,158,255,.45)"></i>Year gone</span><span><i style="background:var(--green)"></i>Budget invoiced or won</span><span><i style="background:var(--text);width:4px"></i>Today</span><span id="sbGap"></span><span id="sbAsof" style="margin-left:auto;color:var(--dimmer)"></span></div>
+        </div>
+      </div>
+    </section>
     <section class="screen" id="s4">
       <div class="ridwrap">
         <div class="ridtop">
@@ -1454,6 +1513,45 @@ const SECONDS_PER_SCREEN = 30;
 
   document.getElementById("stamp").textContent = "Updated " + DATA.generated;
 
+  /* ---------- sales vs budget screen (percentages only) ---------- */
+  /* Filled once a day by the "Office TV sales stats" scheduled task, which writes
+     percentages and counts only. No dollar values ever reach this public screen.
+     With no "sales" data the screen is left out of the rotation. */
+  var SB = (DATA.sales && typeof DATA.sales.salesPct === "number") ? DATA.sales : null;
+  if (SB) {
+  function sbDial(id, pct){
+    var svg=document.getElementById(id), cx=200, cy=200, r=150, MAX=150;
+    function ang(v){return Math.PI*(1-Math.min(v,MAX)/MAX)}
+    function pt(v,rad){return [cx+rad*Math.cos(ang(v)), cy-rad*Math.sin(ang(v))]}
+    function arc(a,b,col){var p1=pt(a,r),p2=pt(b,r);return '<path d="M'+p1[0].toFixed(1)+' '+p1[1].toFixed(1)+' A'+r+' '+r+' 0 0 1 '+p2[0].toFixed(1)+' '+p2[1].toFixed(1)+'" stroke="'+col+'" stroke-width="30" fill="none"/>'}
+    var ticks=[0,25,50,75,100,125,150].map(function(v){var a=pt(v,r+20),b=pt(v,r+8),t=pt(v,r+40);
+      return '<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#5d6979" stroke-width="2"/><text x="'+t[0]+'" y="'+(t[1]+6)+'" font-size="16" text-anchor="middle" fill="#8c99ab">'+v+'%</text>'}).join("");
+    var tip=pt(pct,r-28), col=pct>=100?"#3fb950":pct>=70?"#e3a008":"#f85149";
+    svg.setAttribute("viewBox","0 -10 400 300");
+    svg.innerHTML=arc(0,70,"#7a2f2b")+arc(70,100,"#7a5a14")+arc(100,150,"#1f5c2c")+arc(0,Math.min(pct,150),col)+ticks+
+      '<line x1="'+cx+'" y1="'+cy+'" x2="'+tip[0].toFixed(1)+'" y2="'+tip[1].toFixed(1)+'" stroke="#eef2f7" stroke-width="7" stroke-linecap="round"/>'+
+      '<circle cx="'+cx+'" cy="'+cy+'" r="13" fill="#eef2f7"/>'+
+      '<text x="'+cx+'" y="'+(cy+66)+'" font-size="58" font-weight="700" text-anchor="middle" fill="'+col+'">'+Math.round(pct)+'%</text>';
+    return pct>=100?["g","On or above budget"]:pct>=70?["a","Below budget"]:["r","Well below budget"];
+  }
+  var d1=sbDial("sbDial1",SB.salesPct), d2=sbDial("sbDial2",SB.quotesPct);
+  document.getElementById("sbFoot1").innerHTML='<span class="pill '+d1[0]+'">'+d1[1]+'</span>';
+  document.getElementById("sbFoot2").innerHTML='<span class="pill '+d2[0]+'">'+d2[1]+'</span>';
+  document.getElementById("sbWin").textContent=SB.winRate+"%";
+  document.getElementById("sbWinS").textContent=SB.winOf;
+  document.getElementById("sbSent").textContent=SB.sent;
+  document.getElementById("sbSentS").textContent=SB.sentPrev+" at this point last month";
+  document.getElementById("sbProj").textContent=SB.projPct+"%";
+  document.getElementById("sbGone").textContent=SB.fyGone.toFixed(1)+"%";
+  document.getElementById("sbBud").textContent=SB.fyBudget.toFixed(1)+"%";
+  document.getElementById("sbEl").style.width=SB.fyGone+"%";
+  document.getElementById("sbWon").style.width=SB.fyBudget+"%";
+  document.getElementById("sbNow").style.left="calc("+SB.fyGone+"% - 1px)";
+  var gap=SB.fyBudget-SB.fyGone;
+  document.getElementById("sbGap").innerHTML='<span class="pill '+(gap>=0?"g":"a")+'">'+(gap>=0?"Ahead of":"Behind")+' the year by '+Math.abs(gap).toFixed(1)+' points</span>';
+  document.getElementById("sbAsof").textContent = SB.asof ? "Figures as at " + SB.asof : "";
+  }
+
   /* ---------- rotation ---------- */
   var NAMES = ["Jobs", "Request for Quotes", "Calendar"];
   var screens = [document.getElementById("s0"),
@@ -1474,6 +1572,11 @@ const SECONDS_PER_SCREEN = 30;
   /* Customer service toolbox talk. Fixed content, needs no data, always shown. */
   NAMES.push("Dealing with customers");
   screens.push(document.getElementById("s6"));
+
+  if (SB){
+    NAMES.push("Sales vs budget");
+    screens.push(document.getElementById("s7"));
+  }
 
   NAMES.push(rid ? "Riddle" : "Countdown");
   screens.push(document.getElementById("s4"));

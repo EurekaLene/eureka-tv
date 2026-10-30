@@ -113,6 +113,13 @@ def main():
               "The riddle screen will be skipped this build.")
         data["riddle"] = {}
 
+    # Sales vs budget percentages, written once a day by a separate scheduled
+    # task. Optional: without it the template leaves that screen out.
+    if not isinstance(data.get("sales"), dict):
+        print("Note: no 'sales' in the data. "
+              "The sales vs budget screen will be skipped this build.")
+        data["sales"] = {}
+
     template = open(TEMPLATE, encoding="utf-8").read()
     if "/*__DATA__*/{}" not in template:
         sys.exit("template.html has lost its /*__DATA__*/ marker.")
