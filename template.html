@@ -202,7 +202,13 @@
   .xmas .santa{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);z-index:1;
     animation:peek 6s ease-in-out infinite}
   @keyframes peek{0%,100%{transform:translate(-50%,6px)}50%{transform:translate(-50%,-4px)}}
-  @media (prefers-reduced-motion:reduce){.xmas .bb,.xmas .snow i,.xmas .santa{animation:none}}
+  .xmas .sw{transform-box:fill-box;animation:sweat 2.6s ease-in infinite}
+  .xmas .sw2{animation-delay:-1.3s}
+  @keyframes sweat{0%{transform:translateY(0);opacity:0}15%{opacity:1}80%{opacity:1}100%{transform:translateY(34px);opacity:0}}
+  .xmas .dr{stroke-dasharray:30;animation:drip 3.2s linear infinite}
+  .xmas .dr2{animation-delay:-1.6s}
+  @keyframes drip{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion:reduce){.xmas .bb,.xmas .snow i,.xmas .santa,.xmas .sw,.xmas .dr{animation:none}}
   .ridmain{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);
     border-radius:14px;padding:40px 64px;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;gap:28px}
@@ -405,19 +411,26 @@ const SECONDS_PER_SCREEN = 30;
             </svg>
             <div class="snow" id="xmasSnow" aria-hidden="true"></div>
             <svg class="santa" width="230" height="170" viewBox="0 0 230 170" aria-hidden="true">
-              <!-- hat -->
-              <path d="M55 70 Q70 8 150 18 Q190 24 200 70 Z" fill="#d7263d"/>
-              <path d="M150 18 Q205 20 212 58" fill="none" stroke="#d7263d" stroke-width="22" stroke-linecap="round"/>
-              <circle cx="214" cy="62" r="14" fill="#fff"/>
-              <rect x="44" y="62" width="160" height="26" rx="13" fill="#fff"/>
-              <!-- face -->
-              <ellipse cx="124" cy="112" rx="52" ry="40" fill="#f5c9a8"/>
-              <circle cx="104" cy="104" r="5" fill="#2a1a1a"/><circle cx="144" cy="104" r="5" fill="#2a1a1a"/>
-              <circle cx="92" cy="120" r="9" fill="#ef8f8f" opacity=".7"/><circle cx="156" cy="120" r="9" fill="#ef8f8f" opacity=".7"/>
-              <circle cx="124" cy="118" r="8" fill="#e9a48a"/>
-              <!-- beard and moustache -->
-              <path d="M66 118 Q70 175 124 176 Q178 175 182 118 Q160 140 124 138 Q88 140 66 118 Z" fill="#fff"/>
-              <path d="M124 126 Q104 118 92 132 Q110 138 124 130 Q138 138 156 132 Q144 118 124 126 Z" fill="#f1f1f1" stroke="#e3e3e3"/>
+              <!-- melting snowman -->
+              
+              <path d="M48 152 Q44 126 72 112 Q115 96 160 112 Q190 126 184 152 Q176 160 168 152 Q160 162 150 154 Q132 162 116 154 Q100 162 86 154 Q72 162 62 154 Q54 160 48 152 Z" fill="#fff"/>
+              <ellipse cx="116" cy="157" rx="104" ry="9" fill="#bfe0f5" opacity=".9"/>
+              <ellipse cx="96" cy="155" rx="30" ry="3" fill="#fff" opacity=".6"/>
+              <path class="dr dr2" d="M86 128 q-5 12 1 22 M150 130 q6 12 0 20" stroke="#dbeaf3" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <circle cx="96" cy="128" r="5" fill="#2a1a1a"/><circle cx="118" cy="140" r="5" fill="#2a1a1a"/>
+              <ellipse cx="117" cy="72" rx="40" ry="38" fill="#fff"/>
+              <path class="dr" d="M86 94 q-3 12 3 22 M150 88 q5 10 1 20" stroke="#dbeaf3" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <path d="M90 52 L108 45 M128 45 L146 52" stroke="#2a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <circle cx="100" cy="62" r="6" fill="#2a1a1a"/><circle cx="136" cy="62" r="6" fill="#2a1a1a"/><circle cx="102" cy="60" r="2" fill="#fff"/><circle cx="138" cy="60" r="2" fill="#fff"/>
+              <path d="M117 70 L148 86 L118 80 Z" fill="#f08a24"/>
+              <path d="M102 92 q4 -4 8 0 q4 4 8 0 q4 -4 8 0 q4 4 8 0" stroke="#2a1a1a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="sw" d="M158 44 q6 10 0 14 q-6 -4 0 -14 Z" fill="#8fd0f5"/>
+              <path class="sw sw2" d="M74 54 q5 8 0 12 q-5 -4 0 -12 Z" fill="#8fd0f5"/>
+              <path d="M78 36 Q84 4 118 4 Q152 4 156 36 Z" fill="#2f8f4e"/>
+              <rect x="72" y="32" width="90" height="12" rx="6" fill="#d7263d"/>
+              <circle cx="118" cy="4" r="8" fill="#d7263d"/>
+              <path d="M70 120 L28 96 M40 103 L30 88" stroke="#6b4423" stroke-width="5" stroke-linecap="round"/>
+              <path d="M162 120 L204 104 M192 109 L206 96" stroke="#6b4423" stroke-width="5" stroke-linecap="round"/>
             </svg>
             <div class="xk">Countdown</div>
             <div class="xn" id="xmasN"></div>
@@ -792,6 +805,9 @@ const SECONDS_PER_SCREEN = 30;
     var xmas = Date.UTC(y, 11, 25);
     if (today > xmas){ xmas = Date.UTC(y + 1, 11, 25); }
     var n = Math.round((xmas - today) / 86400000);
+    /* cheeky: the board shows three days fewer than the real count, and
+       says Merry Christmas from 22 December */
+    n = n <= 3 ? 0 : n - 3;
 
     var box = document.getElementById("xmas");
     var N = document.getElementById("xmasN");
